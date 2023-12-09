@@ -1,0 +1,13 @@
+.each-slide>div {
+  display: flex;
+  justify-content: center;
+  background-size: contain;
+  background-position: center;
+  height: 420px;
+}
+
+@media (width > 750px) {
+  .each-slide>div {
+    height: 650px;
+  }
+}
