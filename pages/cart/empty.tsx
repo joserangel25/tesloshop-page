@@ -5,7 +5,7 @@ import { Box, Button, Link, Typography } from "@mui/material"
 
 interface Props { }
 
-function EmptyPage({ }: Props) {
+export default function EmptyCartPage({ }: Props) {
   return (
     <ShopLayout title="Carrito vacío" pageDescription="No hay productos agregados al carrito">
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }} justifyContent="center" alignItems="center" height="calc(100vh - 200px)">
@@ -26,4 +26,3 @@ function EmptyPage({ }: Props) {
   )
 }
 
-export default EmptyPage
