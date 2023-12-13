@@ -1,6 +1,8 @@
 import { useReducer, FC, useEffect } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { useSession, signOut } from "next-auth/react";
+
 import { AuthContext, type IUserRegister, authReducer, type IUserLogin, type IUserRegisterRetorn } from './'
 import { IUser } from '@/interfaces'
 import { tesloApi } from '@/api'
@@ -26,13 +28,23 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE)
   const router = useRouter()
+  const { data, status } = useSession()
+
+  // Ya no uso la autenticación personalizada, si no que comienzo a trabajar con Nexxt-Auth
+  // useEffect(() => {
+  //   const token = Cookies.get('token')
+  //   if (token) {
+  //     checkToken()
+  //   }
+  // }, [])
 
   useEffect(() => {
-    const token = Cookies.get('token')
-    if (token) {
-      checkToken()
+    if (status === 'authenticated') {
+      console.log({ user: data.user })
+      dispatch({ type: 'Auth - Login', payload: data.user as IUser })
     }
-  }, [])
+  }, [status, data])
+
 
   const checkToken = async () => {
     try {
@@ -85,9 +97,19 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   }
 
   const logoutUser = () => {
-    Cookies.remove('token')
+    // Cookies.remove('token')
     Cookies.remove('cart')
-    router.reload()
+    Cookies.remove('firstName')
+    Cookies.remove('lastName')
+    Cookies.remove('address')
+    Cookies.remove('address2')
+    Cookies.remove('zip')
+    Cookies.remove('city')
+    Cookies.remove('country')
+    Cookies.remove('phone')
+
+    signOut()
+    // router.reload()
   }
   return (
     <AuthContext.Provider value={{
